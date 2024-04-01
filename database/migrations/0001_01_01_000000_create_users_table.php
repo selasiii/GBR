@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('username')->nullable();
+            $table->integer('role')->default(3); // 1-admin, 2-agent 3-normal user
+            $table->string('address')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('gender')->default('unknown');
+            $table->date('date_of_birth')->nullable()->default(null);
+            $table->enum('status', ['active', 'inactive'])->default('active');
+
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -21,6 +30,8 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
